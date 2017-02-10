@@ -158,7 +158,7 @@ public class MetFragParameterExporter {
         	argumentString += " " + args[i];
         argumentString = argumentString.replaceAll("\\\\=", "|").replaceAll("\\s+=", "=").replaceAll("\\s+", " ").replaceAll("\\t", " ");
         String[] arguments_splitted = argumentString.split("\\s+");
-        for(int i = 0; i < arguments_splitted.length; i++) {
+         for(int i = 0; i < arguments_splitted.length; i++) {
         	if(arguments_splitted[i].contains("IgnoreEmptyParameters")) {
         		String[] tmp = arguments_splitted[i].split("=");
         		if(tmp[0].equals("IgnoreEmptyParameters")) {
@@ -168,7 +168,7 @@ public class MetFragParameterExporter {
         }
         for(int i = 0; i < arguments_splitted.length; i++) {
 			String[] tmp = arguments_splitted[i].split("=");
-			if(tmp.length != 2) {
+			if(tmp.length != 2 && !ignoreEmptyParameters) {
 				if(tmp[0].equals("-help") || tmp[0].equals("--help") || tmp[0].equals("help")) {
 					help();
 					return false;
