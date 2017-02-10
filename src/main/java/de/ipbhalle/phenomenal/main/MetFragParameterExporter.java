@@ -39,7 +39,8 @@ public class MetFragParameterExporter {
 		parameterNames.add("InputFile");								//spectral data file (mzML)
 		parameterNames.add("OutputFolder");		
 		parameterNames.add("OutputFile");		
-		parameterNames.add("MaximumSpectrumLimit");		
+		parameterNames.add("MaximumSpectrumLimit");	
+		parameterNames.add("ResultsPath");		
 	};
 	
 	//parameters used for MetFrag 
@@ -56,6 +57,7 @@ public class MetFragParameterExporter {
 		parameters.put("MetFragPreProcessingCandidateFilter", "IsotopeFilter,UnconnectedCompoundFilter");
 		parameters.put("MetFragPostProcessingCandidateFilter", "InChIKeyFilter");
 		parameters.put("MetFragPeakListReader", "de.ipbhalle.metfraglib.peaklistreader.FilteredStringTandemMassPeakListReader");
+		parameters.put("ResultsPath", TMPFOLDER);
 	}
 
 	public static String InputFile;
@@ -71,11 +73,11 @@ public class MetFragParameterExporter {
 	public static void main(String[] args) {
 		if(args == null || args.length == 0) {
 			help();
-			return;
+			System.exit(0);
 		}
 		// first read command line parameters
 		if(!readParameters(args)) {
-			return;
+			System.exit(1);
 		}
 		//check input mzML file
 		if(InputFile == null) {
@@ -116,7 +118,6 @@ public class MetFragParameterExporter {
 				specificParameterString += " PeakListString=" + spectraMSMS.get(i).getPeakString();
 				specificParameterString += " PrecursorIonType=" + spectraMSMS.get(i).getPrecursorAdduct();
 				specificParameterString += " MetFragCandidateWriter=CSV";
-				specificParameterString += " ResultsPath=" + TMPFOLDER;
 				commands.add(specificParameterString);
 			}
 			
