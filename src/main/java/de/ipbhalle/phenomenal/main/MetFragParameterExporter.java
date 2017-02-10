@@ -21,7 +21,7 @@ import de.ipbhalle.phenomenal.mzml.ImportMzML;
 public class MetFragParameterExporter {
 
 	private static final String FILESEPARATOR = System.getProperty("file.separator");
-	private static final String TMPFOLDER = System.getProperty("java.io.tmpdir");
+	private static boolean ignoreEmptyParameters = false;
 	
 	//parameter names used as command line arguments
 	public static Vector<String> parameterNames = new Vector<String>(); 
@@ -41,6 +41,7 @@ public class MetFragParameterExporter {
 		parameterNames.add("OutputFile");		
 		parameterNames.add("MaximumSpectrumLimit");	
 		parameterNames.add("ResultsPath");		
+		parameterNames.add("IgnoreEmptyParameters");
 	};
 	
 	//parameters used for MetFrag 
@@ -155,8 +156,16 @@ public class MetFragParameterExporter {
 		String argumentString = args[0];
         for(int i = 1; i < args.length; i++)
         	argumentString += " " + args[i];
-        argumentString = argumentString.replaceAll("\\\\=", "|").replaceAll("\\s+=", "=").replaceAll("=\\s+", "=").replaceAll("\\s+", " ").replaceAll("\\t", " ");
+        argumentString = argumentString.replaceAll("\\\\=", "|").replaceAll("\\s+=", "=").replaceAll("\\s+", " ").replaceAll("\\t", " ");
         String[] arguments_splitted = argumentString.split("\\s+");
+        for(int i = 0; i < arguments_splitted.length; i++) {
+        	if(arguments_splitted[i].contains("IgnoreEmptyParameters")) {
+        		String[] tmp = arguments_splitted[i].split("=");
+        		if(tmp[0].equals("IgnoreEmptyParameters")) {
+        			if(tmp[1].equals("true") || tmp[1].equals("True") || tmp[1].equals("TRUE")) ignoreEmptyParameters = true;
+        		}
+        	}
+        }
         for(int i = 0; i < arguments_splitted.length; i++) {
 			String[] tmp = arguments_splitted[i].split("=");
 			if(tmp.length != 2) {
@@ -172,7 +181,18 @@ public class MetFragParameterExporter {
 				else if(tmp[0].equals("OutputFolder")) OutputFolder = tmp[1];
 				else if(tmp[0].equals("OutputFile")) OutputFile = tmp[1];
 				else if(tmp[0].equals("MaximumSpectrumLimit")) maximumSpectrumLimit = Integer.parseInt(tmp[1]);
-				else parameters.put(tmp[0], tmp[1]);
+				else {
+					if(tmp.length == 1 || tmp[1].length() == 0) {
+						if(ignoreEmptyParameters) {
+							continue;
+						}
+						else {
+							jlog.warning("Error: Missing value for " + arguments_splitted[i] + ".  Execution halted.");
+							return false;
+						}
+					}
+					parameters.put(tmp[0], tmp[1]);
+				}
 				//adapt MetFragScoreWeights if MetFragScoreTypes are set
 				//each score adds a weight
 				if(tmp[0].equals("MetFragScoreTypes")) {
