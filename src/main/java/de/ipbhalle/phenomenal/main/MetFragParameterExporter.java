@@ -57,7 +57,6 @@ public class MetFragParameterExporter {
 		parameters.put("MetFragPreProcessingCandidateFilter", "IsotopeFilter,UnconnectedCompoundFilter");
 		parameters.put("MetFragPostProcessingCandidateFilter", "InChIKeyFilter");
 		parameters.put("MetFragPeakListReader", "de.ipbhalle.metfraglib.peaklistreader.FilteredStringTandemMassPeakListReader");
-		parameters.put("ResultsPath", TMPFOLDER);
 	}
 
 	public static String InputFile;
