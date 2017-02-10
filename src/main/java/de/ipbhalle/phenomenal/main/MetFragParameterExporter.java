@@ -182,6 +182,7 @@ public class MetFragParameterExporter {
 				else if(tmp[0].equals("OutputFolder")) OutputFolder = tmp[1];
 				else if(tmp[0].equals("OutputFile")) OutputFile = tmp[1];
 				else if(tmp[0].equals("MaximumSpectrumLimit")) maximumSpectrumLimit = Integer.parseInt(tmp[1]);
+				else if(tmp[0].equals("IgnoreEmptyParameters")) continue;
 				else {
 					if(tmp.length == 1 || tmp[1].length() == 0) {
 						if(ignoreEmptyParameters) {
