@@ -33,6 +33,7 @@ public class MetFragParameterExporter {
 		parameterNames.add("MaximumTreeDepth");
 		parameterNames.add("MetFragDatabaseType");
 		parameterNames.add("MetFragScoreTypes");
+		parameterNames.add("MetFragScoreWeights");
 		parameterNames.add("MetFragPreProcessingCandidateFilter");
 		parameterNames.add("MetFragPostProcessingCandidateFilter");
 		parameterNames.add("ChemSpiderToken");
@@ -197,7 +198,7 @@ public class MetFragParameterExporter {
 				//each score adds a weight
 				if(tmp[0].equals("MetFragScoreTypes")) {
 					for(int k = 0; k < tmp[1].length(); k++)
-						if(tmp[1].charAt(i) == ',') parameters.put("MetFragScoreWeights", parameters.get("MetFragScoreWeights") + ",1.0");
+						if(tmp[1].charAt(k) == ',') parameters.put("MetFragScoreWeights", parameters.get("MetFragScoreWeights") + ",1.0");
 				}
 			} 
 			else {
